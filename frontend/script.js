@@ -5,6 +5,7 @@ const MAX_PLAYERS = 16;
 let players = [];
 let count = 2;
 let tournamentName = '';
+const API_BASE = '/api';
 
 function updateCounter() {
   const countSpan = document.getElementById('count');
@@ -125,6 +126,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  const loadBtn = document.getElementById('load-tournament-btn');
+  if (loadBtn) {
+    loadBtn.addEventListener('click', () => {
+      window.location.href = 'tournaments.html';
+    });
+  }
+
   const nameInput = document.getElementById('tournament-name-input');
   if (nameInput) {
     nameInput.value = localStorage.getItem('tournamentName') || '';
@@ -189,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const createBtn = document.getElementById('create-btn');
     if (createBtn) {
-      createBtn.addEventListener('click', () => {
+      createBtn.addEventListener('click', async () => {
         const validationMsg = document.getElementById('validation-message');
         let total = 0;
         const type = document.querySelector('input[name="playerType"]:checked');
@@ -202,13 +210,59 @@ document.addEventListener('DOMContentLoaded', () => {
           if (total % 4 !== 0) {
             validationMsg.textContent = 'Количество игроков должно быть кратно 4';
             validationMsg.classList.remove('hidden');
+            return;
           } else {
             validationMsg.classList.add('hidden');
           }
+        }
+
+        try {
+          const res = await fetch(`${API_BASE}/tournaments`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: tournamentName,
+              player_count: total,
+              type: type ? (type.value === 'names' ? 'with_names' : 'without_names') : 'without_names'
+            })
+          });
+          if (res.ok) {
+            alert(`Турнир "${tournamentName}" успешно создан!`);
+            window.location.href = 'index.html';
+          } else {
+            const data = await res.json();
+            alert(data.error || 'Ошибка создания');
+          }
+        } catch (err) {
+          alert('Ошибка сети');
         }
       });
     }
 
     updateCounter();
+  }
+
+  const listEl = document.getElementById('tournaments-list');
+  if (listEl) {
+    fetch(`${API_BASE}/tournaments`)
+      .then(r => r.json())
+      .then(data => {
+        listEl.innerHTML = '';
+        data.forEach(t => {
+          const li = document.createElement('li');
+          const date = new Date(t.created_at).toLocaleString();
+          li.textContent = `${t.name} (${date})`;
+          listEl.appendChild(li);
+        });
+      })
+      .catch(() => {
+        listEl.innerHTML = '<li>Ошибка загрузки</li>';
+      });
+    const back = document.getElementById('back-index');
+    if (back) {
+      back.addEventListener('click', () => {
+        window.location.href = 'index.html';
+      });
+    }
   }
 });
