@@ -13,6 +13,11 @@ const counter = document.getElementById('counter');
 const decreaseBtn = document.getElementById('decrease');
 const increaseBtn = document.getElementById('increase');
 const countSpan = document.getElementById('count');
+const namesContainer = document.getElementById('names-container');
+const limitMessage = document.getElementById('limit-message');
+
+const MAX_NAMED_PLAYERS = 16;
+let players = [];
 
 let count = 2;
 const MIN_PLAYERS = 2;
@@ -30,6 +35,7 @@ function showNewTournament() {
   nameScreen.classList.add('hidden');
   newScreen.classList.remove('hidden');
   heading.textContent = tournamentName || 'Новый турнир';
+  handleTypeChange({target: document.querySelector('input[name="playerType"]:checked')});
 }
 
 function backToStart() {
@@ -44,6 +50,56 @@ function updateCounter() {
   increaseBtn.disabled = count >= MAX_PLAYERS;
 }
 
+function initPlayers() {
+  namesContainer.innerHTML = '';
+  players = [];
+  addPlayerRow();
+}
+
+function addPlayerRow() {
+  if (players.length >= MAX_NAMED_PLAYERS) return;
+
+  const existingAdd = namesContainer.querySelector('.add-player');
+  if (existingAdd) existingAdd.remove();
+
+  const number = players.length + 1;
+  const row = document.createElement('div');
+  row.className = 'player-row';
+
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.placeholder = `Игрок ${number}`;
+  input.maxLength = 30;
+  input.addEventListener('input', () => {
+    players[number - 1] = input.value.trim();
+  });
+  row.appendChild(input);
+
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.textContent = '+';
+  btn.className = 'btn small add-player';
+  btn.addEventListener('click', addPlayerRow);
+  row.appendChild(btn);
+
+  namesContainer.appendChild(row);
+  players.push('');
+
+  updateLimit();
+}
+
+function updateLimit() {
+  const addBtn = namesContainer.querySelector('.add-player');
+  if (players.length >= MAX_NAMED_PLAYERS) {
+    if (addBtn) addBtn.disabled = true;
+    limitMessage.textContent = 'Достигнуто максимальное количество игроков';
+    limitMessage.classList.remove('hidden');
+  } else {
+    if (addBtn) addBtn.disabled = false;
+    limitMessage.classList.add('hidden');
+  }
+}
+
 function validateName() {
   const value = nameInput.value.trim();
   const pattern = /^[A-Za-zА-Яа-я0-9- ]{3,50}$/u;
@@ -55,8 +111,13 @@ function validateName() {
 function handleTypeChange(e) {
   if (e.target.value === 'nonames') {
     counter.classList.remove('hidden');
+    namesContainer.classList.add('hidden');
+    limitMessage.classList.add('hidden');
   } else {
     counter.classList.add('hidden');
+    namesContainer.classList.remove('hidden');
+    if (players.length === 0) initPlayers();
+    updateLimit();
   }
 }
 
@@ -99,4 +160,5 @@ backBtn.addEventListener('click', () => {
 });
 
 updateCounter();
+handleTypeChange({target: document.querySelector('input[name="playerType"]:checked')});
 
