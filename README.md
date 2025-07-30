@@ -1,5 +1,30 @@
 # Padel Brackets — MVP (mobile-first PWA)
 
+## Запуск через Docker
+
+```bash
+git clone <repo-url>
+cd project-root
+docker-compose up --build
+```
+
+### Установка зависимостей без Docker
+
+```bash
+# Frontend
+cd frontend && npm install
+# Backend
+cd ../backend && npm install
+```
+
+### Подключение к PostgreSQL
+
+- **Host:** `db` (или `localhost` при прямом подключении)
+- **Port:** `5432`
+- **User:** `user`
+- **Password:** `password`
+- **Database:** `tournament_db`
+
 Простое веб-приложение для быстрых мини-турниров по паделу: создайте турнир на N человек, сгенерируйте сетку, отмечайте счёт и получайте победителя. Идеально для корпоративных встреч, дней рождения и игры «компанией».
 
 ---
