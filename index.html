@@ -28,8 +28,17 @@
       <p>Здесь будет описание приложения и его возможностей.</p>
     </section>
 
+    <section id="name-screen" class="hidden name-screen">
+      <h2>Название турнира</h2>
+      <input id="tournament-name-input" type="text" placeholder="Введите название" maxlength="50">
+      <div class="cta-buttons">
+        <button id="name-next-btn" class="btn" disabled>Далее</button>
+        <button id="name-back-btn" class="btn secondary">Назад</button>
+      </div>
+    </section>
+
     <section id="new-tournament" class="hidden">
-      <h2>Новый турнир</h2>
+      <h2 id="tournament-heading">Новый турнир</h2>
       <div class="toggle">
         <label><input type="radio" name="playerType" value="names" checked> С именами</label>
         <label><input type="radio" name="playerType" value="nonames"> Без имён</label>
