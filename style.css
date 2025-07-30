@@ -72,3 +72,23 @@ footer {
   padding: 1rem;
   margin-top: 2rem;
 }
+.hidden {
+  display: none;
+}
+
+.counter {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.btn.small {
+  padding: 0.5rem 0.75rem;
+}
+
+.btn.secondary {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
