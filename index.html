@@ -19,13 +19,27 @@
   </header>
 
   <main>
-    <div class="cta-buttons">
-      <button class="btn" disabled>Новый турнир</button>
-      <button class="btn" disabled>Загрузить турнир</button>
-    </div>
-    <section class="intro">
+    <section id="start-screen" class="intro">
       <h2>Добро пожаловать!</h2>
+      <div class="cta-buttons">
+        <button id="new-tournament-btn" class="btn">Новый турнир</button>
+        <button id="load-tournament-btn" class="btn" disabled>Загрузить турнир</button>
+      </div>
       <p>Здесь будет описание приложения и его возможностей.</p>
+    </section>
+
+    <section id="new-tournament" class="hidden">
+      <h2>Новый турнир</h2>
+      <div class="toggle">
+        <label><input type="radio" name="playerType" value="names" checked> С именами</label>
+        <label><input type="radio" name="playerType" value="nonames"> Без имён</label>
+      </div>
+      <div id="counter" class="counter hidden">
+        <button id="decrease" class="btn small">-</button>
+        <span id="count">2</span>
+        <button id="increase" class="btn small">+</button>
+      </div>
+      <button id="back-btn" class="btn secondary">Назад</button>
     </section>
 
     <section class="placeholder">
@@ -36,5 +50,6 @@
   <footer>
     <p>&copy; 2024 Padel Brackets</p>
   </footer>
+<script src="script.js"></script>
 </body>
 </html>
