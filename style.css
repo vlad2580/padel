@@ -73,7 +73,7 @@ footer {
   margin-top: 2rem;
 }
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .counter {
