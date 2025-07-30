@@ -1,6 +1,6 @@
 const MAX_NAMED_PLAYERS = 16;
 const MIN_PLAYERS = 2;
-const MAX_PLAYERS = 64;
+const MAX_PLAYERS = 16;
 
 let players = [];
 let count = 2;
@@ -17,45 +17,60 @@ function updateCounter() {
 }
 
 function initPlayers() {
-  const namesContainer = document.getElementById('names-container');
-  if (!namesContainer) return;
-  namesContainer.innerHTML = '';
-  players = [];
-  addPlayerRow();
+  players = [''];
+  renderPlayers();
+  updateLimit();
 }
 
 function addPlayerRow() {
-  const namesContainer = document.getElementById('names-container');
-  const limitMessage = document.getElementById('limit-message');
-  if (!namesContainer || players.length >= MAX_NAMED_PLAYERS) return;
-
-  const existingAdd = namesContainer.querySelector('.add-player');
-  if (existingAdd) existingAdd.remove();
-
-  const number = players.length + 1;
-  const row = document.createElement('div');
-  row.className = 'player-row';
-
-  const input = document.createElement('input');
-  input.type = 'text';
-  input.placeholder = `Игрок ${number}`;
-  input.maxLength = 30;
-  input.addEventListener('input', () => {
-    players[number - 1] = input.value.trim();
-  });
-  row.appendChild(input);
-
-  const btn = document.createElement('button');
-  btn.type = 'button';
-  btn.textContent = '+';
-  btn.className = 'btn small add-player';
-  btn.addEventListener('click', addPlayerRow);
-  row.appendChild(btn);
-
-  namesContainer.appendChild(row);
+  if (players.length >= MAX_NAMED_PLAYERS) return;
   players.push('');
-
+  renderPlayers();
   updateLimit();
+}
+
+function renderPlayers() {
+  const namesContainer = document.getElementById('names-container');
+  if (!namesContainer) return;
+  namesContainer.innerHTML = '';
+
+  players.forEach((value, index) => {
+    const row = document.createElement('div');
+    row.className = 'player-row';
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.placeholder = `Игрок ${index + 1}`;
+    input.maxLength = 30;
+    input.value = value;
+    input.addEventListener('input', () => {
+      players[index] = input.value.trim();
+    });
+    row.appendChild(input);
+
+    const del = document.createElement('button');
+    del.type = 'button';
+    del.textContent = '🗑';
+    del.className = 'btn small secondary delete-player';
+    del.addEventListener('click', () => {
+      players.splice(index, 1);
+      renderPlayers();
+      updateLimit();
+    });
+    row.appendChild(del);
+
+    if (index === players.length - 1) {
+      const add = document.createElement('button');
+      add.type = 'button';
+      add.textContent = '+';
+      add.className = 'btn small add-player';
+      add.disabled = players.length >= MAX_NAMED_PLAYERS;
+      add.addEventListener('click', addPlayerRow);
+      row.appendChild(add);
+    }
+
+    namesContainer.appendChild(row);
+  });
 }
 
 function updateLimit() {
@@ -93,6 +108,7 @@ function handleTypeChange(e) {
     counter.classList.remove('hidden');
     namesContainer.classList.add('hidden');
     limitMessage.classList.add('hidden');
+    updateCounter();
   } else {
     counter.classList.add('hidden');
     namesContainer.classList.remove('hidden');
