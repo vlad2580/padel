@@ -109,3 +109,31 @@ footer {
   border-radius: 8px;
 }
 
+/* Player names section */
+.names {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.player-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.player-row input {
+  flex: 1;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.limit-message {
+  color: #d32f2f;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
