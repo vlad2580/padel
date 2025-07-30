@@ -187,6 +187,28 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
+    const createBtn = document.getElementById('create-btn');
+    if (createBtn) {
+      createBtn.addEventListener('click', () => {
+        const validationMsg = document.getElementById('validation-message');
+        let total = 0;
+        const type = document.querySelector('input[name="playerType"]:checked');
+        if (type && type.value === 'names') {
+          total = players.length;
+        } else {
+          total = count;
+        }
+        if (validationMsg) {
+          if (total % 4 !== 0) {
+            validationMsg.textContent = 'Количество игроков должно быть кратно 4';
+            validationMsg.classList.remove('hidden');
+          } else {
+            validationMsg.classList.add('hidden');
+          }
+        }
+      });
+    }
+
     updateCounter();
   }
 });
