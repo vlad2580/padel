@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Padel Brackets — Тип турнира</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Padel Brackets</h1>
+  </header>
+
+  <main>
+    <section id="new-tournament">
+      <h2 id="tournament-heading">Новый турнир</h2>
+      <div class="toggle">
+        <label><input type="radio" name="playerType" value="names" checked> С именами</label>
+        <label><input type="radio" name="playerType" value="nonames"> Без имён</label>
+      </div>
+      <div id="counter" class="counter hidden">
+        <button id="decrease" class="btn small">-</button>
+        <span id="count">2</span>
+        <button id="increase" class="btn small">+</button>
+      </div>
+      <div id="names-container" class="names hidden"></div>
+      <p id="limit-message" class="limit-message hidden"></p>
+      <button id="back-btn" class="btn secondary">Назад</button>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 Padel Brackets</p>
+  </footer>
+<script src="script.js"></script>
+</body>
+</html>
